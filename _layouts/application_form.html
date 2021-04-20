@@ -1,0 +1,130 @@
+---
+layout: default
+---
+
+<div class="application_form">
+    <fieldset id="your_details_fields"><legend>Your Details</legend>
+        <p>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" autocomplete="honorific-prefix" list="honourifics">
+            <datalist id="honourifics">
+                <option value="Mr">
+                <option value="Mrs">
+                <option value="Miss">
+                <option value="Ms">
+                <option value="Mx">
+                <option value="Dr">
+                <option value="Justice">
+                <option value="Prof">
+                <option value="Sir">
+            </datalist>
+        </p>
+        <p>
+            <label for="first_name" class="required">First name(s)</label>
+            <input type="text" name="first_name" id="first_name" autocomplete="given-name" required>
+        </p>
+        <p>
+            <label for="last_name" class="required">Surname</label>
+            <input type="text" name="last_name" id="last_name" autocomplete="family-name" required>
+        </p>
+        <p>
+            <label for="emailaddress" class="required">Email address</label>
+            <input type="email" name="emailaddress" id="emailaddress" autocomplete="email" required>
+        </p>
+        <p>
+            <label for="address" class="required">Address</label>
+            <textarea name="address" id="address" autocomplete="street-address" required></textarea>
+        </p>
+        <p>
+            <label for="postcode" class="required">Postcode</label>
+            <input type="text" name="postcode" id="postcode" autocomplete="postal-code" required></textarea>
+        </p>
+        <p>
+            <label for="telephone">Telephone number</label>
+            <input type="tel" name="telephone" id="telephone" autocomplete="tel" />
+        </p>
+    </fieldset>
+    <p>
+        <input type="checkbox" name="is_gift" id="is_gift" />
+        <label for="is_gift">Check this box if this is a gift <span id="is_gift_disabled" class="hidden">(uncheck the Gift Aid box if this is a gift)</span></label>
+    </p>
+    <fieldset id="gift_recipient_fields" class="hidden"><legend>Recipient details</legend>
+        <p>
+            <label for="giftname" class="required">Recipient title, first name and surname</label>
+            <input type="text" name="giftname" id="giftname">
+        </p>
+        <p>
+            <label for="giftaddress" class="required">Recipient address including postcode</label>
+            <textarea name="giftaddress" id="giftaddress"></textarea>
+        </p>
+    </fieldset>
+    <p>
+        <input type="checkbox" name="gift_aid" id="gift_aid" />
+        <label for="gift_aid">Check this box if you wish to Gift Aid your payment <span id="gift_aid_disabled" class="hidden">(sorry, you cannot claim gift aid if this is a gift)</span></label>
+    </p>
+    <fieldset id="gift_aid_fields" class="hidden"><legend>Gift Aid Declaration</legend>
+        <p>I want to Gift aid my membership payment and / or donations I make now, in the future or have made in the last four years to the Yorkshire Dales Society - the charity of the Friends of the Dales. I am a UK taxpayer and understand that if I pay less Income Tax and / or Capital Gaints Tax than the amount of the Gift Aid claimed on all my donations in that tax year, it is my responsibility to pay the difference.</p>
+        <p>Please notify Friends of the Dales if you want to cancel this declaration, or change your name or home address, or no longer pay sufficient tax on your income and/or capital gains.</p>
+        <p>If you pay Income Tax at the higher or additional rate and want to receive the additional relief due to you, you must include all your Gift Aid donations on your Self Assessment tax return or ask HM Revenue and Customs to adjust your tax code.</p>
+        <p>
+            <input type="checkbox" name="gift_aid_confirm" id="gift_aid_confirm" />
+            <label for="gift_aid_confirm">I confirm I have read this declaration and agree</label>
+        </p>
+    </fieldset>
+    <fieldset><legend>Membership</legend>
+        <fieldset><legend>Membership type</legend>
+            <p>
+                <input type="radio" name="membership_type" id="membership_type_new" value="new" checked>
+                <label for="membership_type_new">New</label>
+            </p>
+            <p>
+                <input type="radio" name="membership_type" id="membership_type_renewal" value="renewal">
+                <label for="membership_type_renewal">Renewal</label>
+            </p>
+        </fieldset>
+        <p>
+            <label for="membership_category" class="required">Membership Category</label>
+            <select name="membership_category" id="membership_category">
+                <option value="">Select your membership category...</option>
+                <option value="individual">Individual (£25)</option>
+                <option value="joint">Joint (two Friends at the same address) £35</option>
+                <option value="group">Group / Business (£40)</option>
+            </select>
+        </p>
+        <p class="hidden" id="jointname_field">
+            <label for="jointname" class="required">Title, first name and surname of joint member</label>
+            <input type="text" name="jointname" id="jointname" />
+        </p>
+        <p class="hidden" id="groupname_field">
+            <label for="groupname" class="required">Group / Business Name</label>
+            <input type="text" name="groupname" id="groupname" />
+        </p>
+    </fieldset>
+    <fieldset id="payment_fields"><legend>Payment</legend>
+        <p>
+            <label for="payment_method" class="required">Payment method</label>
+            <select name="payment_method" id="payment_method">
+                <option value="">Select your preferred payment method...</option>
+                <option value="paypal">PayPal</option>
+                <option value="transfer">Bank Transfer</option>
+                <option value="direct">Direct Debit</option>
+                <option value="cheque">Cheque</option>
+            </select>
+        </p>
+        <p class="hidden info_text" id="payment_method_paypal">
+            When you click on the submit button, you will be redirected to PayPal to complete payment
+        </p>
+        <p class="hidden info_text" id="payment_method_transfer">
+            Our banking details will be included in your acknowledgement email.
+        </p>
+        <p class="hidden info_text" id="payment_method_direct">
+            We will send you details of how to set up a Direct Debit payment in your acknowledgement email.
+        </p>
+        <p class="hidden info_text" id="payment_method_cheque">
+            We will send you the address to post cheques to in your acknowledgement email.
+        </p>
+    </fieldset>
+    <p>
+        <button type="submit" name="apply" id="apply">Apply for membership</button>
+    </p>
+</div>

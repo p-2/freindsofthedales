@@ -1,0 +1,25 @@
+html {
+	box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+body {
+	background: $bg;
+	color: $fg;
+	font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 150%;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+header,
+footer,
+.page {
+    max-width:1000px;
+    margin: 0 auto;
+}
