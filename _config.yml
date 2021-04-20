@@ -15,9 +15,9 @@ description: "Become a member of the Friends of the Dales and you'll receive a f
 
 # This URL is the main address. Don't include a slash at the end.
 #
-url: "https://freindsofthedales.github.io"
+url: "https://p-2.github.io/freindsofthedales"
 admin_email: "fotd@bjorsq.net"
-urlimg: "https://freindsofthedales.github.io/assets/img/"
+urlimg: "https://p-2.github.io/freindsofthedales/assets/img/"
 
 # Theme works best with Kramdown (using the table of contents function)
 markdown: kramdown
