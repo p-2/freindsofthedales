@@ -2,7 +2,8 @@
 layout: default
 ---
 
-<div class="application_form">
+<form class="application_form">
+    
     <fieldset id="your_details_fields"><legend>Your Details</legend>
         <p>
             <label for="title">Title</label>
@@ -45,10 +46,10 @@ layout: default
         </p>
     </fieldset>
     <p>
-        <input type="checkbox" name="is_gift" id="is_gift" />
+        <input type="checkbox" name="is_gift" id="is_gift" aria-controls="gift_recipient_fields" aria-expanded="false" />
         <label for="is_gift">Check this box if this is a gift <span id="is_gift_disabled" class="hidden">(uncheck the Gift Aid box if this is a gift)</span></label>
     </p>
-    <fieldset id="gift_recipient_fields" class="hidden"><legend>Recipient details</legend>
+    <fieldset id="gift_recipient_fields" class="hidden" aria-hidden="true"><legend>Recipient details</legend>
         <p>
             <label for="giftname" class="required">Recipient title, first name and surname</label>
             <input type="text" name="giftname" id="giftname">
@@ -59,10 +60,10 @@ layout: default
         </p>
     </fieldset>
     <p>
-        <input type="checkbox" name="gift_aid" id="gift_aid" />
+        <input type="checkbox" name="gift_aid" id="gift_aid" aria-controls="gift_aid_fields" aria-expanded="false" />
         <label for="gift_aid">Check this box if you wish to Gift Aid your payment <span id="gift_aid_disabled" class="hidden">(sorry, you cannot claim gift aid if this is a gift)</span></label>
     </p>
-    <fieldset id="gift_aid_fields" class="hidden"><legend>Gift Aid Declaration</legend>
+    <fieldset id="gift_aid_fields" class="hidden" aria-hidden="true"><legend>Gift Aid Declaration</legend>
         <p>I want to Gift aid my membership payment and / or donations I make now, in the future or have made in the last four years to the Yorkshire Dales Society - the charity of the Friends of the Dales. I am a UK taxpayer and understand that if I pay less Income Tax and / or Capital Gaints Tax than the amount of the Gift Aid claimed on all my donations in that tax year, it is my responsibility to pay the difference.</p>
         <p>Please notify Friends of the Dales if you want to cancel this declaration, or change your name or home address, or no longer pay sufficient tax on your income and/or capital gains.</p>
         <p>If you pay Income Tax at the higher or additional rate and want to receive the additional relief due to you, you must include all your Gift Aid donations on your Self Assessment tax return or ask HM Revenue and Customs to adjust your tax code.</p>
@@ -124,7 +125,25 @@ layout: default
             We will send you the address to post cheques to in your acknowledgement email.
         </p>
     </fieldset>
+    <fieldset><legend>Contact Preferences</legend>
+        <p>
+            <input type="checkbox" name="contact_email" id="contact_email" />
+            <label for="contact_email">Check this box if you are happy to be contacted via email</label>
+        </p>
+        <p>
+            <input type="checkbox" name="contact_telephone" id="contact_telephone" />
+            <label for="contact_telephone">Check this box if you are happy to be contacted via telephone
+        </p>
+        <p>
+            <input type="checkbox" name="contact_life_membership" id="contact_life_membership" />
+            <label for="contact_life_membership">Check this box if you want us to send you information on Life membership</label>
+        </p>
+        <p>
+            <input type="checkbox" name="contact_legacies" id="contact_legacies" />
+            <label for="contact_legacies">Check this box if you want us to send you information on Legacies</label>
+        </p>
+    </fieldset>
     <p>
         <button type="submit" name="apply" id="apply">Apply for membership</button>
     </p>
-</div>
+</form>
