@@ -1,49 +1,61 @@
 (function($){
-	$('#is_gift').attr('aria-controls','gift_recipient_fields').attr('aria-expanded','false');
-	$('#is_gift').on('click', function(){
+
+	var giftaid_switch = '<input type="checkbox" name="gift_aid_switch" id="gift_aid_switch" aria-controls="gift_aid_fields" aria-expanded="false" /><label for="gift_aid_switch">Check this box if you wish to Gift Aid your payment <span id="gift_aid_disabled" class="hidden">(sorry, you cannot claim gift aid if this is a gift)</span></label>';
+	var isgift_switch = '<input type="checkbox" name="is_gift_switch" id="is_gift_switch" aria-controls="gift_recipient_fields" aria-expanded="false" /><label for="is_gift_switch">Check this box if this is a gift <span id="is_gift_disabled" class="hidden">(uncheck the Gift Aid box if this is a gift)</span></label>';
+	$('#is_gift').html(isgift_switch);
+	$('#gift_aid').html(giftaid_switch);
+	$('#gift_recipient_fields,#gift_aid_fields').addClass('hidden');
+	$(document).on('click', '#is_gift_switch', function(){
 		if ($(this).is(':checked')) {
-			$('#is_gift').attr('aria-expanded',true);
+			$('#is_gift_switch').attr('aria-expanded',true);
 			$('#gift_recipient_fields').removeClass('hidden').attr('aria-hidden',false);
 			$('#giftname,#giftaddress').attr('required',true).removeClass('error').next('.error_text').remove();
 			$('#gift_aid_disabled').removeClass('hidden');
-			$('#gift_aid').attr('disabled',true);
+			$('#gift_aid_switch').attr('disabled',true);
+			$('#gift_aid').addClass('hidden');
 		} else {
-			$('#is_gift').attr('aria-expanded',false);
+			$('#is_gift_switch').attr('aria-expanded',false);
 			$('#gift_recipient_fields').addClass('hidden').attr('aria-hidden',true);
 			$('#giftname,#giftaddress').attr('required',null).val('');
 			$('#gift_aid_disabled').addClass('hidden');
-			$('#gift_aid').attr('disabled',null);
+			$('#gift_aid_switch').attr('disabled',null);
+			$('#gift_aid').removeClass('hidden');
 		}
 	});
-	$('#gift_aid').attr('aria-controls','gift_aid_fields').attr('aria-expanded','false');
-	$('#gift_aid').on('click', function(){
+	
+	$(document).on('click', '#gift_aid_switch', function(){
 		if ($(this).is(':checked')) {
-			$('#gift_aid').attr('aria-expanded',true);
+			$('#gift_aid_switch').attr('aria-expanded',true);
 			$('#gift_aid_fields').removeClass('hidden').attr('aria-hidden',false);
 			$('#gift_recipient_fields').addClass('hidden').attr('aria-hidden',true);
 			$('#is_gift_disabled').removeClass('hidden');
-			$('#is_gift').attr('disabled',true);
+			$('#is_gift_switch').attr('disabled',true);
 			$('#gift_aid_confirm').attr('tabindex',0);
+			$('#is_gift').addClass('hidden');
 		} else {
-			$('#gift_aid').attr('aria-expanded',false);
+			$('#gift_aid_switch').attr('aria-expanded',false);
 			$('#gift_aid_fields').addClass('hidden').attr('aria-hidden',true);
 			$('#is_gift_disabled').addClass('hidden');
-			$('#is_gift').attr('disabled',null);
+			$('#is_gift_switch').attr('disabled',null);
 			$('#gift_aid_confirm').attr('tabindex',-1);
+			$('#is_gift').removeClass('hidden');
 		}
 	});
 	$('#payment_method').on('change',function(){
 		$('.info_text').addClass('hidden');
-		if ($('#payment_method').val() !== '') {
+		var method = $('#payment_method').val();
+		var method_key = method.substr(0, method.indexOf(" ")).toLowerCase();
+		if (method_key !== 'select') {
 			$(this).removeClass('error');
-			$('#payment_method_'+$('#payment_method').val()).removeClass('hidden');
+			$('#payment_method_'+method_key).removeClass('hidden');
 		}
 	});
 	$('#membership_category').on('change', function(){
 		$('#jointname_field,#groupname_field').addClass('hidden').attr('required',null);
 		var mcat = $('#membership_category').val();
-		if (mcat !== '') {
-			$('#'+mcat+'name_field').removeClass('hidden').attr('required',true);
+		var mcat_key = mcat.substr(0, mcat.indexOf(" ")).toLowerCase();
+		if (mcat_key !== 'select') {
+			$('#'+mcat_key+'name_field').removeClass('hidden').attr('required',true);
 		}
 	});
 	var clearForm = function(){
@@ -129,6 +141,7 @@
 		if (!$('.error').length) {
 			return true;
 		} else {
+			window.scrollTo(0,($('.error').first().offset().top-100));
 			return false;
 		}
 	};
@@ -146,32 +159,11 @@
 		if ( ! checkForm() ) {
 			e.preventDefault();
 		} else {
-			e.preventDefault();
-			emailjs.init("user_Fh4389PP4R71WbScJHBBL");
-			var data = {
-				'title': $('#title').val(),
-				'first_name': $('#first_name').val(),
-				'last_name': $('#last_name').val(),
-				'emailaddress': $('#emailaddress').val(),
-				'address': $('#address').val(),
-				'postcode': $('#postcode').val(),
-				'telephone': $('#telephone').val(),
-				'is_gift': ($('#is_gift').is(':checked')?'yes':'no'),
-				'giftname': $('#giftname').val(),
-				'giftaddress': $('#giftaddress').val(),
-				'gift_aid': ($('#gift_aid').is(':checked')&&$('#gift_aid_confirm').is(':checked')?'yes':'no'),
-				'membership_type': $('input[name="membership_type"]:checked').val(),
-				'membership_category': $('#membership_category').val(),
-				'jointname': $('#jointname').val(),
-				'groupname': $('#groupname').val(),
-				'payment_method': $('#payment_method').val(),
-				'contact_email': ($('#contact_email').is(':checked')?'yes':'no'),
-				'contact_telephone': ($('#contact_telephone').is(':checked')?'yes':'no'),
-				'contact_life_membership': ($('#contact_life_membership').is(':checked')?'yes':'no'),
-				'contact_legacies': ($('#contact_legacies').is(':checked')?'yes':'no'),
-			};
-			var overlay_text = '<p>Sending your details</p><div class="loader_container"><div class="loader">Loading...</div></div>';
-			$('body').append('<div class="overlay"><div id="overlay_text" class="text">'+overlay_text+'</div></div>');
+			var mcat = $('#membership_category').val();
+		    var mcat_key = mcat.substr(0, mcat.indexOf(" ")).toLowerCase();
+			var payment_method = $('#payment_method').val();
+			var overlay_text = '<p>Sending your details</p><div class="application-form-loader_container"><div class="application-form-loader">Loading...</div></div>';
+			$('body').append('<div class="application-form-overlay"><div id="application-form-overlay_text" class="text">'+overlay_text+'</div></div>');
 			var memberships = {
 				'individual': {'name':'Individual Annual membership','number':'Individual Annual membership','amount':25},
 				'joint': {'name':'Joint Annual membership','number':'Joint Annual membership','amount':35},
@@ -185,9 +177,9 @@
 			var paypal_form = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post">';
 			paypal_form += '<input type="hidden" name="business" value="ann.shadrake@yds.org.uk">';
 			paypal_form += '<input type="hidden" name="cmd" value="_xclick">';
-			paypal_form += '<input type="hidden" name="item_name" value="'+memberships[data.membership_type].name+'">';
-			paypal_form += '<input type="hidden" name="item_number" value="'+memberships[data.membership_type].number+'">';
-			paypal_form += '<input type="hidden" name="amount" value="'+memberships[data.membership_type].amount+'">';
+			paypal_form += '<input type="hidden" name="item_name" value="'+memberships[mcat_key].name+'">';
+			paypal_form += '<input type="hidden" name="item_number" value="'+memberships[mcat_key].number+'">';
+			paypal_form += '<input type="hidden" name="amount" value="'+memberships[mcat_key].amount+'">';
 			paypal_form += '<input type="hidden" name="tax" value="0">';
 			paypal_form += '<input type="hidden" name="currency_code" value="GBP">';
 			paypal_form += '<input type="hidden" name="shipping" value="">';
@@ -201,35 +193,24 @@
 			paypal_form += '<input type="hidden" name="no_note" value="1">';
 			paypal_form += '<button type="submit" title="Make payments with PayPal, it\'s fast, free, and secure!" class="paypal_button">Pay using PayPal</button>';
 			paypal_form += '</form>';
-			emailjs.send('default_service', 'template_xgra2h4', data )
-				.then( function(response){
-					overlay_text = '<h3>SUCCESS!</h3><p>We have recieved your application for membership</p>';
-					if ( data.payment_method == 'paypal' ){
-						overlay_text += paypal_form;
-						$('#overlay_text').html(overlay_text);
-					} else {
-						// payment method is transfer, direct or cheque
-						userdata = {
-							'to_name': data.first_name+' '+data.last_name,
-							'payment_method': payment_methods[data.payment_method],
-							'membership_name': memberships[data.membership_type].name,
-							'membership_amount': memberships[data.membership_type].amount,
-						}
-						emailjs.send('default_service', 'template_czq4ilo', userdata )
-							.then( function(response){
-								$('#overlay_text').html(overlay_text);
-								$(document).on('click', '.overlay', function(){$(this).remove();clearForm();});
-							}, function(error){
-								overlay_text = '<h3>ERROR!</h3><p>Sorry, there was a problem sending you details on how to make your payment by '+payment_methods[data.payment_method]+'</p>';
-								$(document).on('click', '.overlay', function(){$(this).remove();clearForm();});
-							});
-						$('#overlay_text').html(overlay_text);
-						$(document).on('click', '.overlay', function(){$(this).remove();});
-				}, function(error){
-					overlay_text = '<h3>ERROR!</h3><p>Sorry, there was a problem sending your subscription information</p>';
+			// mail sent OK
+			$(document).on('wpcf7mailsent', function(e){
+				overlay_text = '<h3>SUCCESS!</h3><p>We have recieved your application for membership</p>';
+				if ( payment_method == 'paypal' ){
+					overlay_text += paypal_form;
 					$('#overlay_text').html(overlay_text);
-					$(document).on('click', '.overlay', function(){$(this).remove();});
-				});
+				}
+			});
+			// invalid input found in form
+			$(document).on('wpcf7invalid', function(e){
+				$('#overlay_text').html('<h3>Sorry...</h3><p>There were some problems found with the form. Please correct these and try again.</p>');
+				$(document).on('click', '.overlay', function(){$(this).remove();});
+			});
+			// message not sent
+			$(document).on('wpcf7mailfailed', function(){
+				$('#overlay_text').html('<h3>Sorry...</h3><p>There was a problem sending mail. Please check your email and try again.</p>');
+				$(document).on('click', '.overlay', function(){$(this).remove();});
+			});
 		}
 	});
 })(jQuery);

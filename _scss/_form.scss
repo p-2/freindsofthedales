@@ -127,8 +127,64 @@
 	#gift_aid_fields span.error_text {
 		padding-left:1em;
 	}
+	input[type="checkbox"],
+	input[type="radio"] {
+		opacity: 0;
+		+ label {
+			position: relative;
+			display: inline-block;
+			padding-left: 22px;
+			&::before,
+			&::after {
+				position: absolute;
+				content: "";
+				display: inline-block;
+			}
+			&::before {
+				height: 16px;
+				width: 16px;
+				border: 2px solid $cbxbg;
+				border-radius:4px;
+				left: 0px;
+				background: $cbxbg;
+				color: $cbxfg;
+			}
+			&::after {
+				color: $cbxfg;
+				left: 4px;
+				top: 4px;
+				content: none;
+			}
+		}
+		&:checked + label::after {
+			content: "";
+		}
+		&:focus + label::before {
+			outline: 2px dotted green;
+			outline-offset:1px;
+		}
+	}
+	input[type="checkbox"] + label {
+		&::after {
+			height: 5px;
+			width: 9px;
+			border-left: 2px solid;
+			border-bottom: 2px solid;
+			transform: rotate(-45deg);
+			border-color: $cbxfg;
+			color: $cbxfg;
+		}
+	}
+	input[type="radio"] + label {
+		&::after {
+			height:0;
+			width:0;
+			border-radius:8px;
+			border:6px solid $cbxfg;
+		}
+	}
 }
-div.overlay {
+.application-form-overlay {
 	position: fixed;
 	width: 100%;
 	height: 100%;
@@ -139,31 +195,31 @@ div.overlay {
 	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 2;
 	cursor: pointer;
+	.text {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 50%;
+		padding: 1em;
+		background-color: white;
+		border: 1px solid #333;
+		transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+	}
 }
-div.overlay .text {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 50%;
-	padding: 1em;
-	background-color: white;
-	border: 1px solid #333;
-	transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-}
-.loader,
-.loader:before,
-.loader:after {
+.application-form-loader,
+.application-form-loader:before,
+.application-form-loader:after {
   background: $fg;
   -webkit-animation: load1 1s infinite ease-in-out;
   animation: load1 1s infinite ease-in-out;
   width: 1em;
   height: 4em;
 }
-.loader_container {
+.application-form-loader_container {
 	height:5em;
 }
-.loader {
+.application-form-loader {
   color: $fg;
   text-indent: -9999em;
   margin: 88px auto;
@@ -174,20 +230,20 @@ div.overlay .text {
   transform: translateZ(0);
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
-}
-.loader:before,
-.loader:after {
-  position: absolute;
-  top: 0;
-  content: '';
-}
-.loader:before {
-  left: -1.5em;
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-.loader:after {
-  left: 1.5em;
+  &:before,
+  &:after {
+	position: absolute;
+	top: 0;
+	content: '';
+  }
+  &:before {
+	left: -1.5em;
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+  }
+  &:after {
+  	left: 1.5em;
+  }
 }
 @-webkit-keyframes load1 {
   0%,
