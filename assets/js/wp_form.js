@@ -174,7 +174,8 @@
 				'direct':'Direct Debit',
 				'cheque':'Cheque',
 			};
-			var paypal_form = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post">';
+			var paypal_form = '<p>Please click on the button below to be redirected to the PayPal website where you can pay your subscription fee.</p>';
+			paypal_form += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post">';
 			paypal_form += '<input type="hidden" name="business" value="ann.shadrake@yds.org.uk">';
 			paypal_form += '<input type="hidden" name="cmd" value="_xclick">';
 			paypal_form += '<input type="hidden" name="item_name" value="'+memberships[mcat_key].name+'">';
@@ -191,15 +192,18 @@
 			paypal_form += '<input type="hidden" name="receiver_email" value="ann.shadrake@yds.org.uk">';
 			paypal_form += '<input type="hidden" name="no_shipping" value="0">';
 			paypal_form += '<input type="hidden" name="no_note" value="1">';
-			paypal_form += '<button type="submit" title="Make payments with PayPal, it\'s fast, free, and secure!" class="paypal_button">Pay using PayPal</button>';
+			paypal_form += '<button type="submit" title="Make payments with PayPal, it\'s fast, free, and secure!" class="paypal-button">Pay using PayPal</button>';
 			paypal_form += '</form>';
 			// mail sent OK
 			$(document).on('wpcf7mailsent', function(e){
-				overlay_text = '<h3>SUCCESS!</h3><p>We have recieved your application for membership</p>';
-				if ( payment_method == 'paypal' ){
+				overlay_text = '<h3>Thank You!</h3><p>We have recieved your application for membership</p>';
+				if ( payment_method == 'PayPal' ){
 					overlay_text += paypal_form;
-					$('#overlay_text').html(overlay_text);
+				} else {
+
+					$(document).on('click', '.overlay', function(){$(this).remove();});
 				}
+				$('#overlay_text').html(overlay_text);
 			});
 			// invalid input found in form
 			$(document).on('wpcf7invalid', function(e){
