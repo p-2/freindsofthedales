@@ -217,9 +217,11 @@
 		background-size:80%;
 		background-repeat:no-repeat;
 		background-position:center center;
+		background-color: white;
 		&:hover,
 		&:focus {
 		  border-color: $pp-dark;
+		  background-color: white;
 		}
 	}
 }

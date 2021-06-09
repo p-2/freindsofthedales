@@ -1,0 +1,232 @@
+<script type="text/javascript">
+    (function($){
+        var giftaid_switch = '<input type="checkbox" name="gift_aid_switch" id="gift_aid_switch" aria-controls="gift_aid_fields" aria-expanded="false" /><label for="gift_aid_switch">Check this box if you wish to Gift Aid your payment</label>';
+        var isgift_switch = '<input type="checkbox" name="is_gift_switch" id="is_gift_switch" aria-controls="gift_recipient_fields" aria-expanded="false" /><label for="is_gift_switch">Check this box if this is a gift</label>';
+        $('#is_gift').html(isgift_switch);
+        $('#gift_aid').html(giftaid_switch);
+        $('#gift_recipient_fields,#gift_aid_fields').addClass('hidden');
+        $(document).on('click', '#is_gift_switch', function(){
+            if ($(this).is(':checked')) {
+                $('#is_gift_switch').attr('aria-expanded',true);
+                $('#gift_recipient_fields').removeClass('hidden').attr('aria-hidden',false);
+                $('#giftname,#giftaddress').attr('required',true).removeClass('error').parents('p').find('.error_text').remove();
+                $('#gift_aid_switch').attr('disabled',true);
+                $('#gift_aid').addClass('hidden');
+            } else {
+                $('#is_gift_switch').attr('aria-expanded',false);
+                $('#gift_recipient_fields').addClass('hidden').attr('aria-hidden',true);
+                $('#giftname,#giftaddress').attr('required',null).val('');
+                $('#gift_aid_switch').attr('disabled',null);
+                $('#gift_aid').removeClass('hidden');
+            }
+        });
+        
+        $(document).on('click', '#gift_aid_switch', function(){
+            if ($(this).is(':checked')) {
+                $('#gift_aid_switch').attr('aria-expanded',true);
+                $('#gift_aid_fields').removeClass('hidden').attr('aria-hidden',false);
+                $('#gift_recipient_fields').addClass('hidden').attr('aria-hidden',true);
+                $('#is_gift_switch').attr('disabled',true);
+                $('#gift_aid_confirm').attr('tabindex',0);
+                $('#is_gift').addClass('hidden');
+            } else {
+                $('#gift_aid_switch').attr('aria-expanded',false);
+                $('#gift_aid_fields').addClass('hidden').attr('aria-hidden',true);
+                $('#is_gift_switch').attr('disabled',null);
+                $('#gift_aid_confirm').attr('tabindex',-1);
+                $('#is_gift').removeClass('hidden');
+            }
+        });
+        $('#payment_method').on('change',function(){
+            $('.info_text').addClass('hidden');
+            var method = $('#payment_method').val();
+            var method_key = method.substr(0, method.indexOf(" ")).toLowerCase();
+            if (method_key !== 'select') {
+                $(this).removeClass('error');
+                $('#payment_method_'+method_key).removeClass('hidden');
+            }
+        });
+        $('#jointname_field,#groupname_field').addClass('hidden');
+        $('#membership_category').on('change', function(){
+            $('#jointname_field,#groupname_field').addClass('hidden');
+            var mcat = $('#membership_category').val();
+            var mcat_key = mcat.substr(0, mcat.indexOf(" ")).toLowerCase();
+            if (mcat_key !== 'select') {
+                $('#'+mcat_key+'name_field').removeClass('hidden error').parents('p').find('.error_text').addClass('hidden');
+            }
+        });
+        var clearForm = function(){
+            // reset form
+            $('form.application_form').trigger('reset');
+            // hide info text about payment methods
+            $('.info_text').addClass('hidden').attr('aria-hidden',true);
+            // reset gift aid expando
+            $('#gift_aid').attr('aria-expanded',false);
+            $('#gift_aid_fields').addClass('hidden').attr('aria-hidden',true);
+            $('#is_gift').attr('disabled',null);
+            $('#gift_aid_confirm').attr('tabindex',-1);
+            // reset gift recipient details expando
+            $('#is_gift').attr('aria-expanded',false);
+            $('#gift_recipient_fields').addClass('hidden').attr('aria-hidden',true);
+            $('#giftname,#giftaddress').attr('required',null).val('');
+            $('#gift_aid').attr('disabled',null);
+        };
+        var checkForm = function(){
+            // Clear any previous errors
+            $('span.error_text').addClass('hidden');
+            $('input textarea select').removeClass('error');
+            // Check name
+            if ( $.trim($('#first_name').val()) === '' ){
+                $('#first_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if ( $.trim($('#last_name').val()) === '' ){
+                $('#last_name').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // Check email
+            var emailRE = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+            if (!$.trim($('#emailaddress').val()).match(emailRE)){
+                $('#emailaddress').val('');
+            }
+            if ( $.trim($('#emailaddress').val()) === '' ){
+                $('#emailaddress').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            // Check address
+            if ( $.trim($('#address').val()) === '' ){
+                $('#address').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if ( $.trim($('#postcode').val()) === '' ){
+                $('#postcode').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if ($('#is_gift').is(':checked') && $('#gift_aid').is(':checked')){
+                // Can't do both - uncheck
+                $('#is_gift').prop('checked', false);
+                $('#gift_aid').prop('checked', false);
+                $('#gift_aid_confirm').prop('checked', false);
+                $('#gift_aid_fields').addClass('hidden');
+                $('#gift_recipient_fields').addClass('hidden');
+                $('#giftname,#giftaddress').attr('required',null).val('');
+            }
+            // If this is a gift, check recipient details
+            if ($('#is_gift').is(':checked')){
+                // Check recipient name
+                if ( $.trim($('#giftname').val()) === '' ){
+                    $('#giftname').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+                }
+                // Check recipient address
+                if ( $.trim($('#giftaddress').val()) === '' ){
+                    $('#giftaddress').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+                }
+            }
+            // If Gift Aid is being used, check confirmation
+            if ($('#gift_aid').is(':checked')){
+                // make sure confirmation is checked
+                if(!$('#gift_aid_confirm').is(':checked')){
+                    $('#gift_aid_confirm').addClass('error');
+                    $('#gift_aid_fields').find('.error_text').removeClass('hidden');
+                }
+            }
+            var mcat = $('#membership_category').val();
+            var mcat_key = mcat.substr(0, mcat.indexOf(" ")).toLowerCase();
+            if (mcat_key === 'select') {
+                $('#membership_category').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            } else if (mcat_key === 'joint' && $.trim($('#jointname').val()) === '' ) {
+                $('#jointname').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            } else if (mcat_key === 'group' && $.trim($('#groupname').val()) === '' ) {
+                $('#groupname').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            var paym = $('#payment_method').val();
+            var paym_key = paym.substr(0,6).toLowerCase();
+            if ( paym_key === 'select' ){
+                $('#payment_method').addClass('error').parents('p').find('.error_text').removeClass('hidden');
+            }
+            if (!$('.error').length) {
+                return true;
+            } else {
+                window.scrollTo(0,($('.error').first().offset().top-100));
+                return false;
+            }
+        };
+        // remove the error condition for a field when it gets focus
+        $('input[type=text],input[type=email],textarea,select').on('focus', function(){
+            if ( $(this).hasClass('error') ) {
+                $(this).removeClass('error');
+                $(this).parents('p').find('.error_text').addClass('hidden');
+            }
+        });
+        // remove the error condition for the gift aid checkbox when it gets focus
+        $('#gift_aid_confirm').on('focus',function(){
+            $('#gift_aid_confirm').removeClass('error');
+            $('#gift_aid_fields').find('.error_text').addClass('hidden');
+        });
+        $('#apply').on('click',function(e){
+            if ( ! checkForm() ) {
+                e.preventDefault();
+            } else {
+                var mcat = $('#membership_category').val();
+                var mcat_key = mcat.substr(0, mcat.indexOf(" ")).toLowerCase();
+                var payment_method = $('#payment_method').val();
+                var overlay_text = '<p>Sending your details</p><div class="application-form-loader_container"><div class="application-form-loader">Loading...</div></div>';
+                $('body').append('<div class="application-form-overlay"><div id="application-form-overlay_text" class="text">'+overlay_text+'</div></div>');
+                var memberships = {
+                    'individual': {'name':'Individual Annual membership','amount':25},
+                    'joint': {'name':'Joint Annual membership','amount':35},
+                    'group': {'name':'Group membership','amount':40},
+                };
+                var payment_methods = {
+                    'transfer':'Bank Transfer',
+                    'direct':'Direct Debit',
+                    'cheque':'Cheque',
+                };
+                // mail sent OK
+                $(document).on('wpcf7mailsent', function(e){
+                    var membership_number = 0;
+                    for ( var i = 0; i < e.detail.inputs.length; i++ ) {
+                        if ( 'submission_id' == e.detail.inputs[i].name ) {
+                            membership_number = e.detail.inputs[i].value;
+                            break;
+                        }
+                    }
+                    var paypal_form = '<p>Please click on the button below to be redirected to the PayPal website where you can pay your subscription fee.</p>';
+                    paypal_form += '<'+'fo'+'rm action="https://www.paypal.com/cgi-bin/webscr" method="post">';
+                    paypal_form += '<input type="hidden" name="business" value="ann.shadrake@yds.org.uk">';
+                    paypal_form += '<input type="hidden" name="cmd" value="_xclick">';
+                    paypal_form += '<input type="hidden" name="item_name" value="'+memberships[mcat_key].name+'">';
+                    paypal_form += '<input type="hidden" name="item_number" value="'+membership_number+'">';
+                    paypal_form += '<input type="hidden" name="amount" value="'+memberships[mcat_key].amount+'">';
+                    paypal_form += '<input type="hidden" name="tax" value="0">';
+                    paypal_form += '<input type="hidden" name="currency_code" value="GBP">';
+                    paypal_form += '<input type="hidden" name="shipping" value="">';
+                    paypal_form += '<input type="hidden" name="shipping2" value="">';
+                    paypal_form += '<input type="hidden" name="handling" value="">';
+                    paypal_form += '<input type="hidden" name="return" value="">';
+                    paypal_form += '<input type="hidden" name="cancel_return" value="">';
+                    paypal_form += '<input type="hidden" name="undefined_quantity" value="0">';
+                    paypal_form += '<input type="hidden" name="receiver_email" value="ann.shadrake@yds.org.uk">';
+                    paypal_form += '<input type="hidden" name="no_shipping" value="0">';
+                    paypal_form += '<input type="hidden" name="no_note" value="1">';
+                    paypal_form += '<button type="submit" title="Make payments with PayPal, it\'s fast, free, and secure!" class="paypal-button">Pay using PayPal</button>';
+                    paypal_form += '</'+'fo'+'rm>';
+                    overlay_text = '<h3>Thank You!</h3><p>We have recieved your application for membership</p>';
+                    // if PayPal is ayment method, add PayPal button and make modal (non-dismissable)
+                    if ( payment_method == 'PayPal' ){
+                        overlay_text += paypal_form;
+                    } else {
+                        // ability to close message
+                        $(document).on('click', '.application-form-overlay', function(){$(this).remove();});
+                    }
+                    $('#application-form-overlay_text').html(overlay_text);
+                });
+                // invalid input found in form
+                $(document).on('wpcf7invalid', function(e){
+                    $('#application-form-overlay_text').html('<h3>Sorry...</h3><p>There were some problems found with the form. Please correct these and try again.</p>');
+                    $(document).on('click', '.application-form-overlay', function(){$(this).remove();});
+                });
+                // message not sent
+                $(document).on('wpcf7mailfailed', function(){
+                    $('#application-form-overlay_text').html('<h3>Sorry...</h3><p>There was a problem sending mail. Please check your email and try again.</p>');
+                    $(document).on('click', '.application-form-overlay', function(){$(this).remove();});
+                });
+            }
+        });
+    })(jQuery);
+    </script>

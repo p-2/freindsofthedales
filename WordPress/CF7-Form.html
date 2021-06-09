@@ -1,0 +1,116 @@
+[submission_id_hidden submission_id id:submission_id]
+[hidden paypal_return_url "https://fotd.bjorsq.net/paypal-thanks/"]
+[hidden paypal_cancel_return_url "https://fotd.bjorsq.net/paypal-cancel/"]
+<div class="application_form">
+	<fieldset id="your_details_fields"><legend>Your Details</legend>
+		<p>
+			<label for="title">Title</label>
+			[text title id:title autocomplete:honorific-prefix]
+		</p>
+		<p>
+			<label for="first_name" class="required">First name(s)</label>
+			[text* first_name id:first_name autocomplete:given-name]
+			<span class="error_text hidden">Please enter your first name.</span>
+		</p>
+		<p>
+			<label for="last_name" class="required">Surname</label>
+			[text* last_name id:last_name autocomplete:family-name]
+			<span class="error_text hidden">Please enter your surname.</span>
+		</p>
+		<p>
+			<label for="emailaddress" class="required">Email address</label>
+			[email* emailaddress id:emailaddress autocomplete:email]
+			<span class="error_text hidden">Please enter your email address</span>
+		</p>
+		<p>
+			<label for="address" class="required">Address</label>
+			[textarea* address id:address autocomplete:street-address]
+			<span class="error_text hidden">Please enter your address.</span>
+		</p>
+		<p>
+			<label for="postcode" class="required">Postcode</label>
+			[text postcode id:postcode autocomplete:postal-code]
+			<span class="error_text hidden">Please enter your postcode.</span>
+		</p>
+		<p>
+			<label for="telephone">Telephone number</label>
+			[tel telephone id:telephone autocomplete:tel]
+		</p>
+	</fieldset>
+	<p id="is_gift">If this subscription is a gift, please fill out the recipient's details below</p>
+	<fieldset id="gift_recipient_fields"><legend>Recipient details</legend>
+		<p>
+			<label for="giftname" class="required">Recipient title, first name and surname</label>
+			[text giftname id:giftname]
+			<span class="error_text hidden">Please enter the full name of the recipient.</span>
+		</p>
+		<p>
+			<label for="giftaddress" class="required">Recipient address including postcode</label>
+			[textarea giftaddress id:giftaddress]
+			<span class="error_text hidden">Please enter the address and postcode of the recipient.</span>
+		</p>
+	</fieldset>
+	<p id="gift_aid">If you wish to Gift Aid your membership payment, please read the following declaration and confirm your choice by checking the box</p>
+	<fieldset id="gift_aid_fields"><legend>Gift Aid Declaration</legend>
+		<p>I want to Gift aid my membership payment and / or donations I make now, in the future or have made in the last four years to the Yorkshire Dales Society - the charity of the Friends of the Dales. I am a UK taxpayer and understand that if I pay less Income Tax and / or Capital Gaints Tax than the amount of the Gift Aid claimed on all my donations in that tax year, it is my responsibility to pay the difference.</p>
+		<p>Please notify Friends of the Dales if you want to cancel this declaration, or change your name or home address, or no longer pay sufficient tax on your income and/or capital gains.</p>
+		<p>If you pay Income Tax at the higher or additional rate and want to receive the additional relief due to you, you must include all your Gift Aid donations on your Self Assessment tax return or ask HM Revenue and Customs to adjust your tax code.</p>
+		<p>[acceptance gift_aid_confirm id:gift_aid_confirm optional]I confirm I have read this declaration and agree[/acceptance]</p>
+		<span class="error_text indent hidden">Please confirm you agree to the Gift Aid declaration.</span>
+	</fieldset>
+	<fieldset><legend>Membership</legend>
+		<p class="required">Membership type</p>
+		[radio membership_type id:membership_type use_label_element default:1 "New" "Renewal"]
+		<p>
+			<label for="membership_category" class="required">Membership Category</label>
+			[select* membership_category id:membership_category "Select your membership category..." "Individual (£25)" "Joint (two Friends at the same address) £35" "Group / Business (£40)"]
+			<span class="error_text hidden">Please select a Membership Category.</span>
+		</p>
+		<p class="hidden" id="jointname_field">
+			<label for="jointname" class="required">Title, first name and surname of joint member</label>
+			[text jointname id:jointname]
+			<span class="error_text hidden">Please enter a name for the joint member.</span>
+		</p>
+		<p class="hidden" id="groupname_field">
+			<label for="groupname" class="required">Group / Business Name</label>
+			[text groupname id:groupname]
+			<span class="error_text hidden">Please enter a name for the Group / Business.</span>
+		</p>
+	</fieldset>
+	<fieldset id="payment_fields"><legend>Payment</legend>
+		<p>
+			<label for="payment_method" class="required">Payment method</label>
+			[select payment_method id:payment_method "Select your preferred payment method..." "PayPal" "Bank Transfer" "Direct Debit" "Cheque"]
+			<span class="error_text hidden">Please select a Payment method.</span>
+		</p>
+		<p class="hidden info_text" id="payment_method_paypal">
+			When you click on the submit button, you will be redirected to PayPal to complete payment
+		</p>
+		<p class="hidden info_text" id="payment_method_bank">
+			Our banking details will be included in your acknowledgement email.
+		</p>
+		<p class="hidden info_text" id="payment_method_direct">
+			We will send you details of how to set up a Direct Debit payment in your acknowledgement email.
+		</p>
+		<p class="hidden info_text" id="payment_method_cheque">
+			We will send you the address to post cheques to in your acknowledgement email.
+		</p>
+	</fieldset>
+	<fieldset><legend>Contact Preferences</legend>
+		<p>
+			[acceptance contact_email id:contact_email optional]Check this box if you are happy to be contacted via email[/acceptance]
+		</p>
+		<p>
+			[acceptance contact_telephone id:contact_telephone optional]Check this box if you are happy to be contacted via telephone[/acceptance]
+		</p>
+		<p>
+			[acceptance contact_life_membership id:contact_life_membership optional]Check this box if you want us to send you information on Life membership[/acceptance]
+		</p>
+		<p>
+			[acceptance contact_legacies id:contact_legacies optional]Check this box if you want us to send you information on Legacies[/acceptance]
+		</p>
+	</fieldset>
+	<p>
+		[submit id:apply class:apply "Apply for membership"]
+	</p>
+</div>
